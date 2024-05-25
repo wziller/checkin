@@ -12,6 +12,7 @@ import {
 } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { PlusIcon } from "@heroicons/react/20/solid";
+import { signOut } from "next-auth/react";
 
 function classNames(...classes:[string]) {
   return classes.filter(Boolean).join(" ");
@@ -144,16 +145,22 @@ export default function Navigation() {
                         </MenuItem>
                         <MenuItem>
                           {({ focus }) => (
-                            <a
-                              href="#"
-                              className={classNames(
-                                focus
-                                  ? "bg-gray-100 block px-4 py-2 text-sm text-gray-700"
-                                  : "block px-4 py-2 text-sm text-gray-700"
-                              )}
+                            <button
+                            onClick={()=>{signOut({
+                              callbackUrl: `${window.location.origin}/auth`,
+                            });}}
                             >
-                              Sign out
-                            </a>
+                              <a
+                                href="#"
+                                className={classNames(
+                                  focus
+                                    ? "bg-gray-100 block px-4 py-2 text-sm text-gray-700"
+                                    : "block px-4 py-2 text-sm text-gray-700"
+                                )}
+                              >
+                                Sign out
+                              </a>
+                            </button>
                           )}
                         </MenuItem>
                       </MenuItems>
@@ -230,13 +237,14 @@ export default function Navigation() {
                 >
                   Your Profile
                 </DisclosureButton>
-                <DisclosureButton
-                  as="a"
-                  href="#"
+                <button
+                  onClick={() =>
+                    signOut({ callbackUrl: `${window.location.origin}/auth` })
+                  }
                   className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 sm:px-6"
                 >
                   Settings
-                </DisclosureButton>
+                </button>
                 <DisclosureButton
                   as="a"
                   href="#"

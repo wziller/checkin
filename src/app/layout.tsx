@@ -16,12 +16,9 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  
   return (
     <html className="h-full bg-white">
-      <body className={`${inter.className} h-full`}>
-        {children}
-      </body>
+      <body className={`${inter.className} h-full`}>{children}</body>
     </html>
   );
 }
