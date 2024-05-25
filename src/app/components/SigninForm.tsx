@@ -1,6 +1,7 @@
 "use client";
 
 import { signIn } from "next-auth/react";
+import dynamic from "next/dynamic";
 import React, { useState } from "react";
 
 type Props = {};
@@ -18,7 +19,6 @@ const SigninForm = (props: Props) => {
     }
     return window.alert("Success!");
   }
-
   
   return (
     <form action={signInWithEmail}method="POST" className="space-y-6">

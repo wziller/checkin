@@ -1,12 +1,17 @@
-import React from 'react'
-import Navigation from '../components/Navigation'
+import React, { Children } from "react";
+import Navigation from "../components/Navigation";
 
-type Props = {}
+type Props = {};
 
-const layout = (props: Props) => {
+const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <Navigation/>
-  )
-}
+    <>
+      <Navigation />
+      <div>
+        {children}
+      </div>
+    </>
+  );
+};
 
-export default layout
+export default Layout;
