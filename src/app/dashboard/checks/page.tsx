@@ -1,3 +1,11 @@
+'use client'
+
+import { useQuery } from "@apollo/client";
+import  {GET_USER_CHECKS}  from "./queries";
+import { getServerSession } from "next-auth";
+
+
+
 const posts = [
   {
     id: 1,
@@ -22,6 +30,21 @@ const posts = [
 ];
 
 export default function page() {
+  // const userId = getServerSession()
+  const userId = "clwn14rxs000q11tmrwdbv7op";
+  const { loading, error, data } = useQuery(GET_USER_CHECKS, {
+    variables: { userId: userId },
+  });
+
+    if (loading) return <p>Loading...</p>;
+    if (error) {
+      console.error("GraphQL error:", error);
+      return <p>Error: {error.message}</p>;
+    }
+
+    const user = data.user;
+  
+  
   return (
     <div className="bg-white py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">

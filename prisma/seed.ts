@@ -17,11 +17,47 @@ async function main() {
           length: { min: 5, max: 7 },
           strategy: "fail",
         }),
-        context: faker.lorem.word({
-          length: { min: 5, max: 20 },
+        word: faker.lorem.word({
+          length: { min: 5, max: 7 },
           strategy: "fail",
         }),
-        public: publicVal,
+    description: faker.lorem.word({
+          length: { min: 5, max: 7 },
+          strategy: "fail",
+        }),
+    body: faker.lorem.word({
+          length: { min: 5, max: 7 },
+          strategy: "fail",
+        }),
+    trigger: faker.lorem.word({
+          length: { min: 5, max: 7 },
+          strategy: "fail",
+        }),
+    reaction: faker.lorem.word({
+          length: { min: 5, max: 7 },
+          strategy: "fail",
+        }),
+    response: faker.lorem.word({
+          length: { min: 5, max: 7 },
+          strategy: "fail",
+        }),
+    physical: faker.lorem.word({
+          length: { min: 5, max: 7 },
+          strategy: "fail",
+        }),
+    thoughts: faker.lorem.word({
+          length: { min: 5, max: 7 },
+          strategy: "fail",
+        }),
+    action: faker.lorem.word({
+          length: { min: 5, max: 7 },
+          strategy: "fail",
+        }),
+    grateful: faker.lorem.word({
+          length: { min: 5, max: 7 },
+          strategy: "fail",
+        }),
+        public: publicVal
       });
     }
 
@@ -39,7 +75,7 @@ async function main() {
         },
       },
     });
-    console.log(user);
+    
   }
 }
 main()

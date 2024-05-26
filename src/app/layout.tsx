@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Navigation from "./components/Navigation";
-import HomeNavigation from "./components/HomeNavigation";
-
+import Provider from "../../context/provider";
+import { ApolloProvider } from "@apollo/client";
+import client from "@/utils/apolloClient";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,7 +19,11 @@ export default function RootLayout({
 }>) {
   return (
     <html className="h-full bg-white">
-      <body className={`${inter.className} h-full`}>{children}</body>
+      <Provider>
+        <body className={`${inter.className} h-full`}>
+          <ApolloProvider client={client}>{children} </ApolloProvider>
+        </body>
+      </Provider>
     </html>
   );
 }
