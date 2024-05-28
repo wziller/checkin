@@ -1,5 +1,3 @@
-
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,22 +9,24 @@ datasource db {
 }
 
 model Check {
-  id          String  @id @default(cuid())
+  id          String   @id @default(cuid())
   title       String
+  image       String?
   word        String
   description String
   body        String
-  trigger     String?
-  reaction    String?
-  response    String?
+  trigger     String
+  reaction    String
+  response    String
   physical    String
   thoughts    String
   action      String
   grateful    String
-  context     String?
-  public      Boolean @default(false)
-  userId    String
-  user     User?   @relation(fields: [userId], references: [id])
+  public      Boolean  @default(false)
+  userId      String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        User     @relation(fields: [userId], references: [id])
 }
 
 model Account {
@@ -64,8 +64,10 @@ model User {
   emailVerified DateTime?
   image         String?
   public        Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
   accounts      Account[]
-  checks        Check[]    
+  checks        Check[]
   sessions      Session[]
   User_A        User[]    @relation("friends")
   User_B        User[]    @relation("friends")

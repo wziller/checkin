@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
-export const GET_USER_CHECKS = gql`
-  query Query($userId: String!) {
-    checksByUserId(userId: $userId) {
+export const GET_CHECK_BY_ID = gql`
+  query Query($checkId: String!) {
+    checkById(checkId: $checkId) {
       id
       title
       word

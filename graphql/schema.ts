@@ -6,11 +6,12 @@ export const typeDefs = gql`
     id: String!
     title: String!
     word: String!
+    image: String
     description: String!
     body: String!
-    trigger: String
-    reaction: String
-    response: String
+    trigger: String!
+    reaction: String!
+    response: String!
     physical: String!
     thoughts: String!
     action: String!
@@ -18,6 +19,8 @@ export const typeDefs = gql`
     public: Boolean!
     userId: String!
     user: User
+    updatedAt: DateTime
+    createdAt: DateTime
   }
 
   type User {
@@ -33,13 +36,15 @@ export const typeDefs = gql`
   }
 
   type Query {
-    allUsers:[User]
-    user(id:ID!):User
+    allUsers: [User]
+    user(id: ID!): User
+    checkById(checkId: String!): Check
+    checksByUserId(userId: String!): [Check!]!
   }
 
   type Mutation {
     createCheck(input: CheckInput!): Check
-    updateCheck(id: String!, input: CheckInput!): Check
+    updateCheck(input: CheckInput!): Check
     deleteCheck(id: String!): Check
     createUser(input: UserInput!): User
     updateUser(id: String!, input: UserInput!): User
@@ -47,6 +52,7 @@ export const typeDefs = gql`
   }
 
   input CheckInput {
+    id:String!
     title: String!
     word: String!
     description: String!

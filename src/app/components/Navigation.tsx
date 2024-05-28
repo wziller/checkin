@@ -25,8 +25,6 @@ export default function Navigation() {
   const user = session?.user
   const userNames = user?.name?.split(' ')
   const userInitials = userNames? userNames[0][0]+userNames[1][0]:""
-
-  console.log(user?.image)
   return (
     <Disclosure as="nav" className="bg-white shadow">
       {({ open }) => (
@@ -49,7 +47,7 @@ export default function Navigation() {
                 <div className="flex flex-shrink-0 items-center">
                   <img
                     className="h-8 w-auto"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                    src="../../../../mark.svg"
                     alt="Your Company"
                   />
                 </div>
