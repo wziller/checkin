@@ -10,6 +10,7 @@ import {
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid";
 import CheckEditModal from "./CheckEditModal";
 import { Check } from "@prisma/client";
+import CheckDeleteModal from "./CheckDeleteModal";
 
 type Props = {
   check: Check;
@@ -18,6 +19,7 @@ type Props = {
 const CheckMenu = (props: Props) => {
   const { check } = props;
   const [editOpen, setEditOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
   return (
     <div className=" pb-1">
       <div className="max-w-6xl sm:flex sm:items-baseline sm:justify-end">
@@ -56,8 +58,8 @@ const CheckMenu = (props: Props) => {
                   </MenuItem>
                   <MenuItem>
                     {({ focus }) => (
-                      <a
-                        href="#"
+                      <button
+                      onClick={()=>setDeleteOpen(true)}
                         className={
                           focus
                             ? "bg-gray-100 text-gray-900 flex justify-between px-4 py-2 text-sm"
@@ -65,7 +67,7 @@ const CheckMenu = (props: Props) => {
                         }
                       >
                         <span className="text-red-600">Delete</span>
-                      </a>
+                      </button>
                     )}
                   </MenuItem>
                 </div>
@@ -75,6 +77,11 @@ const CheckMenu = (props: Props) => {
         </div>
       </div>
       <CheckEditModal check={check} open={editOpen} setOpen={setEditOpen} />
+      <CheckDeleteModal
+        checkId={check.id}
+        open={deleteOpen}
+        setOpen={setDeleteOpen}
+      />
     </div>
   );
 };

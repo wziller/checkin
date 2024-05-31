@@ -43,7 +43,7 @@ export const typeDefs = gql`
   }
 
   type Mutation {
-    createCheck(input: CheckInput!): Check
+    createCheck(input: AddCheckInput!): Check
     updateCheck(input: CheckInput!): Check
     deleteCheck(id: String!): Check
     createUser(input: UserInput!): User
@@ -51,8 +51,23 @@ export const typeDefs = gql`
     deleteUser(id: String!): User
   }
 
+  input AddCheckInput {
+    word: String!
+    description: String!
+    body: String!
+    trigger: String
+    reaction: String
+    response: String
+    physical: String!
+    thoughts: String!
+    action: String!
+    grateful: String!
+    public: Boolean!
+    userId: String!
+    title:String!
+  }
+
   input CheckInput {
-    id:String!
     title: String!
     word: String!
     description: String!

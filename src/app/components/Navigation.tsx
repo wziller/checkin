@@ -1,5 +1,5 @@
 'use client'
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import {
   Disclosure,
   DisclosureButton,
@@ -13,18 +13,25 @@ import {
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { PlusIcon } from "@heroicons/react/20/solid";
 import { signOut, useSession } from "next-auth/react";
+import CheckCreateModal from "./CheckCreateModal";
+
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/utils/auth";
-
+type User={
+  name: string
+  id:string
+}
 function classNames(...classes:[string]) {
   return classes.filter(Boolean).join(" ");
 }
 type Props={}
-export default function Navigation() {
+export default function Navigation(props:Props) {
   const {data: session, status} = useSession()
   const user = session?.user
   const userNames = user?.name?.split(' ')
   const userInitials = userNames? userNames[0][0]+userNames[1][0]:""
+  const [createOpen, setCreateOpen] = useState(false)
+  const userId=user?.id
   return (
     <Disclosure as="nav" className="bg-white shadow">
       {({ open }) => (
@@ -71,17 +78,12 @@ export default function Navigation() {
                   >
                     Checks
                   </a>
-                  {/* <a
-                    href="#"
-                    className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
-                  >
-                    Calendar
-                  </a> */}
                 </div>
               </div>
               <div className="flex items-center">
                 <div className="flex-shrink-0">
                   <button
+                    onClick={()=>setCreateOpen(true)}
                     type="button"
                     className="relative inline-flex items-center gap-x-1.5 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
@@ -98,6 +100,7 @@ export default function Navigation() {
                     <span className="sr-only">View notifications</span>
                     <BellIcon className="h-6 w-6" aria-hidden="true" />
                   </button>
+                  <CheckCreateModal open={createOpen} setOpen={setCreateOpen}userId={userId} />
 
                   {/* Profile dropdown */}
                   <Menu as="div" className="relative ml-3">

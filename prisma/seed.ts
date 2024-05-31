@@ -655,6 +655,7 @@ async function main() {
         },
       },
     });
+    console.log(user)
   }
 }
 

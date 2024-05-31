@@ -4,6 +4,7 @@ import EmailProvider from "next-auth/providers/email";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { Adapter } from "next-auth/adapters";
+import { JWT, Session, User, Account, Profile } from "next-auth";
 import prisma from "./db";
 
 export const authOptions = {
@@ -30,20 +31,26 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    session: async ({ session, token }) => {
-      if (session?.user) {
-        session.user.id = token.sub;
-      }
-      return session;
-    },
-    jwt: async ({ user, token }) => {
-      if (user) {
-        token.uid = user.id;
+    async jwt({ token, account }: { token: JWT; account?: Account }) {
+      if (account) {
+        token.accessToken = account.access_token;
       }
       return token;
     },
-  },
-  session: {
-    strategy: "jwt",
+
+    async session({
+      session,
+      token,
+      user,
+    }: {
+      session: Session;
+      token: JWT;
+      user: User;
+    }) {
+      if (user) {
+        session.user.id = user.id;
+      }
+      return session;
+    },
   },
 } satisfies NextAuthOptions;

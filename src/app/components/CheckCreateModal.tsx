@@ -8,57 +8,57 @@ import {
   Transition,
   TransitionChild,
 } from "@headlessui/react";
-import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
-import { Check } from "@prisma/client";
 import { useMutation } from "@apollo/client";
-import { UPDATE_CHECK } from "../dashboard/checks/[checkId]/mutations";
+import { CREATE_CHECK } from "../dashboard/checks/[checkId]/mutations";
+import { debug } from "console";
 
 type Props = {
   open: boolean;
   setOpen: Function;
-  check: Check;
+  userId: string;
 };
 
-const CheckEditModal = (props: Props) => {
-  const { check, open, setOpen } = props;
-  const [word, setWord] = useState(check.word);
-  const [description, setDescription] = useState(check.description);
-  const [body, setBody] = useState(check.body);
-  const [trigger, setTrigger] = useState(check.trigger);
-  const [reaction, setReaction] = useState(check.reaction);
-  const [response, setResponse] = useState(check.response);
-  const [physical, setPhysical] = useState(check.physical);
-  const [thoughts, setThoughts] = useState(check.thoughts);
-  const [action, setAction] = useState(check.action);
-  const [grateful, setGrateful] = useState(check.grateful);
+const CheckCreateModal = (props: Props) => {
+  const { userId, open, setOpen } = props;
+  const [word, setWord] = useState("");
+  const [description, setDescription] = useState("");
+  const [body, setBody] = useState("");
+  const [trigger, setTrigger] = useState("");
+  const [reaction, setReaction] = useState("");
+  const [response, setResponse] = useState("");
+  const [physical, setPhysical] = useState("");
+  const [thoughts, setThoughts] = useState("");
+  const [action, setAction] = useState("");
+  const [grateful, setGrateful] = useState("");
 
-  const [updateCheck, { data, loading, error }] = useMutation(UPDATE_CHECK);
+  const [createCheck] = useMutation(CREATE_CHECK);
 
-  const handleSubmit = () => {
-    updateCheck({
+  const handleSubmit = async () => {
+    console.log("handleSubmit started");
+    const input = {
+      action: action,
+      body: body,
+      description: description,
+      grateful: grateful,
+      physical: physical,
+      public: false,
+      reaction: reaction,
+      response: response,
+      thoughts: thoughts,
+      trigger: trigger,
+      userId: userId,
+      word: word,
+      title: "title",
+    };
+    console.log("input+++++++>?", input);
+    
+    const newCheck = await createCheck({
       variables: {
-        input: {
-          id:check.id,
-          title: check.title,
-          word,
-          description,
-          body,
-          trigger,
-          reaction,
-          response,
-          physical,
-          thoughts,
-          action,
-          grateful,
-          public: check.public,
-          userId: check.userId,
-        },
+       input,
       },
-    });
-    
-    if (error) console.log("ERROR", error);
-    
-    return;
+    })
+    console.log(newCheck)
+    debugger
   };
   return (
     <Transition show={open}>
@@ -86,7 +86,7 @@ const CheckEditModal = (props: Props) => {
             >
               <DialogPanel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
                 <div className="container mx-auto sm:px-6 lg:px-8">
-                  <form onSubmit={() => handleSubmit()}>
+                  <form onSubmit={handleSubmit}>
                     <div className="space-y-12">
                       <div className="border-b border-gray-900/10 pb-12">
                         <h2 className="text-base font-semibold leading-7 text-gray-900">
@@ -108,8 +108,8 @@ const CheckEditModal = (props: Props) => {
                             </label>
                             <div className="mt-2">
                               <textarea
-                                id="about"
-                                name="about"
+                                id="word"
+                                name="word"
                                 onChange={(e) => setWord(e.target.value)}
                                 rows={3}
                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -117,14 +117,14 @@ const CheckEditModal = (props: Props) => {
                               />
                             </div>
                             <label
-                              htmlFor="about"
+                              htmlFor="description"
                               className="block text-sm font-medium leading-6 text-gray-900 mt-7"
                             >
                               How would you describe that emotion?
                             </label>
                             <div className="mt-2">
                               <textarea
-                                id="about"
+                                id="description"
                                 name="about"
                                 onChange={(e) => {
                                   setDescription(e.target.value);
@@ -135,15 +135,15 @@ const CheckEditModal = (props: Props) => {
                               />
                             </div>
                             <label
-                              htmlFor="about"
+                              htmlFor="body"
                               className="block text-sm font-medium leading-6 text-gray-900 mt-7"
                             >
                               How does your body feel?
                             </label>
                             <div className="mt-2">
                               <textarea
-                                id="about"
-                                name="about"
+                                id="body"
+                                name="body"
                                 onChange={(e) => {
                                   setBody(e.target.value);
                                 }}
@@ -309,4 +309,4 @@ const CheckEditModal = (props: Props) => {
   );
 };
 
-export default CheckEditModal;
+export default CheckCreateModal;

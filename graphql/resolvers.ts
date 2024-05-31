@@ -11,7 +11,7 @@ interface Context {
 }
 
 interface CheckInput {
-  id:string;
+  id: string;
   title: string;
   word: string;
   description: string;
@@ -76,7 +76,7 @@ export const resolvers = {
         throw error;
       }
     },
-    checksByUserId: async (parent: any, args, context:Context, info) => {
+    checksByUserId: async (parent: any, args, context: Context, info) => {
       const { userId } = args;
 
       // Logging userId to ensure it's being passed correctly
@@ -107,27 +107,66 @@ export const resolvers = {
     },
   },
   Mutation: {
-    createCheck: async (parent: any, input: CheckInput, context: Context) => {
-      if (!input) {
+    createCheck: async (
+      parent: any,
+      args: { input: CheckInput },
+      context: Context
+    ) => {
+      const { input } = args;
+      console.log("RESOVLERINPUT", input)
+      debugger
+      try {
+        const newCheck = await prisma.check.create({
+          data: { ...input },
+        });
+
+        return newCheck;
+      } catch (error) {
+        console.error(`Error creating check:`, error);
+        throw error;
+      }
+    },
+    deleteCheck: async (
+      parent: any,
+      args: { id: string },
+      context: Context
+    ) => {
+      const { id } = args;
+
+      if (!id) {
         throw new Error("The 'input' argument is required.");
       }
-      const json = JSON.stringify(input)
-      const check = await prisma.check.create({
-        data: input,
+
+      // Check if the record exists
+      const checkExists = await prisma.check.findUnique({
+        where: { id: id },
       });
+
+      if (!checkExists) {
+        throw new Error("Record to delete does not exist.");
+      }
+
+      // Proceed to delete the record
+      const check = await prisma.check.delete({
+        where: { id: id },
+      });
+
       return check;
     },
-    updateCheck: async (parent: any, args:{input:CheckInput}, context: Context) => {
-      const {input} = args
-      
+    updateCheck: async (
+      parent: any,
+      args: { input: CheckInput },
+      context: Context
+    ) => {
+      const { input } = args;
+
       if (!input) {
         throw new Error("The 'input' argument is required.");
       }
       try {
         const check = await prisma.check.update({
-          
           where: {
-            id: input.id
+            id: input.id,
           },
           data: {
             title: input.title,
@@ -151,6 +190,6 @@ export const resolvers = {
         console.error(`Error updating checks:`, error);
         throw error;
       }
-    }
+    },
   },
 };

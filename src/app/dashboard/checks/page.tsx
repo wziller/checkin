@@ -2,23 +2,24 @@
 
 import { useQuery } from "@apollo/client";
 import  {GET_USER_CHECKS}  from "./queries";
-import { getServerSession } from "next-auth";
 import CheckCard from "@/app/components/CheckCard";
+import { useSession } from "next-auth/react";
 
 
 export default function page() {
+  const { data:session, status } = useSession();
 
-  const userId = "clwpwyleh000b10bqjo04a8tu";
+  const userId:string =session?.user?.id
+  
   const { loading, error, data } = useQuery(GET_USER_CHECKS, {
     variables: { userId: userId },
   });
-
+    if (!userId) return <p>Loading...</p>;
     if (loading) return <p>Loading...</p>;
     if (error) {
-      console.error("GraphQL error:", error);
+      // console.error("GraphQL error:", error);
       return <p>Error: {error.message}</p>;
     }
-    
     const checks = data.checksByUserId;
   
   return (
@@ -35,7 +36,7 @@ export default function page() {
         </div>
         <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">
           {checks?.map((check:any) => (
-            <CheckCard check={check}/>
+            <CheckCard key={check.id} check={check}/>
           ))}
         </div>
       </div>
